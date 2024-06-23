@@ -1,14 +1,14 @@
 #include "button.h"
 #include <PCA95x5.h>
 
-PCA9535 ioex1;  // Объект расширителя ввода-вывода
-PCA9535 ioex2;  // Объект расширителя ввода-вывода
+PCA9535 ioex1;  // Объект первого расширителя ввода-вывода
+PCA9535 ioex2;  // Объект второго расширителя ввода-вывода
 
 button btn1(2);
 button btn2(3);
 button btn3(4);
 
-int mode;  // Переменная режима устройства
+int mode;  // Переменная режима работы устройства
 // 0 - бездействие
 // 1 - салют
 // 2 - падение
@@ -49,13 +49,13 @@ void fall() {
 
 void comet() {
   ioex2.write(15, PCA95x5::Level::H);  // Последний белый светоиод всегда горит
+  ioex2.write(PCA95x5::Level::H_ALL);  // Зажигаем все огни
+  ioex1.write(PCA95x5::Level::H_ALL);  // Зажигаем все огни
   for (int i = 14; i != 0; i--) {
-    ioex2.write(PCA95x5::Level::H_ALL);  // Зажигаем все огни
     ioex2.write(i, PCA95x5::Level::L);   // Гасим нужный
     delay(speed);
   }
   for (int i = 15; i != 0; i--) {
-    ioex1.write(PCA95x5::Level::H_ALL);  // Зажигаем все огни
     ioex1.write(i, PCA95x5::Level::L);   // Гасим нужный
     delay(speed);
   }
